@@ -1,5 +1,6 @@
 import util.Input;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,21 +9,26 @@ import java.util.ArrayList;
 public class ContactsApplication {
     public static void main(String[] args) {
         // read contacts
-        readContacts();
+//        readContacts();
         // display menu
-        displayMenu();
+//        displayMenu();
         // draw contacts
         // add contact
         // search contacts
         // delete contacts
         // write contacts
         // exit
+        try {
+            System.out.println(Files.readAllLines(dataFilepath));
+        } catch (IOException e){
+            System.out.println(e);
+        }
     }
     static Input input = new Input();
     static String directory = "src/data";
     static String filename = "contacts.txt";
     static Path dataDirectory = Paths.get(directory);
-    static Path dataFile = Paths.get(directory, filename);
+    static Path dataFilepath = Paths.get(directory, filename);
     static ArrayList<Contact> contacts = new ArrayList<>();
 
     private static void displayMenu(){
@@ -33,7 +39,7 @@ public class ContactsApplication {
                 "5. Exit.\n" +
                 "Enter an option (1, 2, 3, 4 or 5): ", 1, 5);
         if (userInput == 1){
-            drawContacts();
+            printContacts();
             displayMenu();
         } else if (userInput == 2){
             addContact();
@@ -49,7 +55,7 @@ public class ContactsApplication {
             exitContacts();
         }
     }
-    private static void drawContacts(){
+    private static void printContacts(){
         System.out.println("Name  |  Phone Number\n" +
                 "---------------------");
         for (Contact contact : contacts) {
