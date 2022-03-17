@@ -1,5 +1,6 @@
 import util.Input;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,20 +10,15 @@ import java.util.ArrayList;
 public class ContactsApplication {
     public static void main(String[] args) {
         // read contacts
-//        readContacts();
+        readContacts();
         // display menu
-//        displayMenu();
+        displayMenu();
         // draw contacts
         // add contact
         // search contacts
         // delete contacts
         // write contacts
         // exit
-        try {
-            System.out.println(Files.readAllLines(dataFilepath));
-        } catch (IOException e){
-            System.out.println(e);
-        }
     }
     static Input input = new Input();
     static String directory = "src/data";
@@ -51,20 +47,20 @@ public class ContactsApplication {
             deleteContact();
             displayMenu();
         } else if (userInput == 5){
-            writeContacts();
+            writeContacts(contacts);
             exitContacts();
         }
     }
     private static void printContacts(){
-        System.out.println("Name  |  Phone Number\n" +
-                "---------------------");
+        System.out.println("Name       | Phone Number |\n" +
+                "---------------------------");
         for (Contact contact : contacts) {
-            System.out.println(contact);
+            System.out.printf("%-10s | %-12d |\n", contact.getName(), contact.getNumber());
         }
     }
     private static void addContact(){
         String contactName = input.getString("Enter contact name: ");
-        int contactNumber = input.getInt("Enter contact number: ");
+        long contactNumber = input.getLong("Enter contact number: ");
         Contact contact = new Contact(contactName, contactNumber);
         contacts.add(contact);
     }
@@ -93,9 +89,25 @@ public class ContactsApplication {
         System.out.println("Goodbye, and have a wonderful day!");
     }
     private static void readContacts(){
+        try {
+            System.out.println(Files.readAllLines(dataFilepath));
 
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
-    private static void writeContacts(){
+    private static void writeContacts(ArrayList<Contact> contacts){
+        try {
+            // first create an ArrayList of Strings from the robots
+            ArrayList<String> contactStrings = new ArrayList<>();
+            for(Contact contact : contacts) {
+                contactStrings.add(contact.toString());
+            }
 
+            // write the arraylist of robot strings to the file
+            Files.write(dataFilepath, contactStrings);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

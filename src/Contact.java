@@ -1,15 +1,15 @@
 public class Contact {
     private String name;
-    private int number;
+    private long number;
 
-    public Contact(String name, int number) {
+    public Contact(String name, long number) {
         this.name = name;
         this.number = number;
     }
 
     @Override
     public String toString() {
-        return name + " | " + number;
+        return name + " " + number;
     }
 
     public String getName() {
@@ -20,7 +20,7 @@ public class Contact {
         this.name = name;
     }
 
-    public int getNumber() {
+    public long getNumber() {
         return number;
     }
 

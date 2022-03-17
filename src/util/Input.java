@@ -85,4 +85,18 @@ public class Input {
             return userDbl;
         } while (true);
     }
+
+    public long getLong(String prompt){
+        do {
+            String s = getString(prompt);
+            long userLong;
+            try {
+                userLong = Long.parseLong(s);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: enter a long");
+                continue;
+            }
+            return userLong;
+        } while (true);
+    }
 }
