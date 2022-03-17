@@ -10,4 +10,4 @@
 out/*
 
 # generated data
-data/*
+src/data/*
