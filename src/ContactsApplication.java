@@ -50,6 +50,14 @@ public class ContactsApplication {
     }
     private static void addContact(){
         String contactName = input.getString("Enter contact name: ");
+        for (Contact contact : contacts){
+            if (contactName.equalsIgnoreCase(contact.getName())){
+                if (!input.yesNo("There's already a contact named " + contactName +
+                        ". Do you want to overwrite it? (Yes/No)")){
+                    return;
+                }
+            }
+        }
         long contactNumber = input.getLong("Enter contact number: ");
         Contact contact = new Contact(contactName, contactNumber);
         contacts.add(contact);
