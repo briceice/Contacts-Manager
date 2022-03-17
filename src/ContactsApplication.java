@@ -1,6 +1,5 @@
 import util.Input;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,54 +7,43 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class ContactsApplication {
-    public static void main(String[] args) {
-        // read contacts
-        readContacts();
-        // display menu
-        displayMenu();
-        // draw contacts
-        // add contact
-        // search contacts
-        // delete contacts
-        // write contacts
-        // exit
-    }
     static Input input = new Input();
     static String directory = "src/data";
     static String filename = "contacts.txt";
-    static Path dataDirectory = Paths.get(directory);
     static Path dataFilepath = Paths.get(directory, filename);
     static ArrayList<Contact> contacts = new ArrayList<>();
 
-    private static void displayMenu(){
-        int userInput = input.getInt("1. View contacts.\n" +
+    public static void methodHandler(){
+        readContacts();
+        do {
+            int option = displayMenu();
+            if (option == 1){
+                printContacts();
+            } else if (option == 2){
+                addContact();
+            } else if (option == 3){
+                searchContacts();
+            } else if (option == 4){
+                deleteContact();
+            } else if (option == 5){
+                exitContacts();
+                break;
+            }
+        } while (true);
+    }
+    private static int displayMenu(){
+        return input.getInt("1. View contacts.\n" +
                 "2. Add a new contact.\n" +
                 "3. Search a contact by name.\n" +
                 "4. Delete an existing contact.\n" +
                 "5. Exit.\n" +
                 "Enter an option (1, 2, 3, 4 or 5): ", 1, 5);
-        if (userInput == 1){
-            printContacts();
-            displayMenu();
-        } else if (userInput == 2){
-            addContact();
-            displayMenu();
-        } else if (userInput == 3){
-            searchContacts();
-            displayMenu();
-        } else if (userInput == 4){
-            deleteContact();
-            displayMenu();
-        } else if (userInput == 5){
-            writeContacts(contacts);
-            exitContacts();
-        }
     }
     private static void printContacts(){
         System.out.println("Name       | Phone Number |\n" +
                 "---------------------------");
         for (Contact contact : contacts) {
-            System.out.printf("%-10s | %-12d |\n", contact.getName(), contact.getNumber());
+            System.out.printf("%-10s | %-12s |\n", contact.getName(), contact.getNumber());
         }
     }
     private static void addContact(){
@@ -86,12 +74,24 @@ public class ContactsApplication {
         System.out.println("Sorry, contact not found.");
     }
     private static void exitContacts(){
+        writeContacts(contacts);
         System.out.println("Goodbye, and have a wonderful day!");
     }
     private static void readContacts(){
         try {
-            System.out.println(Files.readAllLines(dataFilepath));
-
+            ArrayList<String> contactStrings = new ArrayList<>(Files.readAllLines(dataFilepath));
+            for (String s : contactStrings) {
+                String[] arrOfStr = s.split(" ", 0);
+                long contactNumber;
+                try {
+                    contactNumber = Long.parseLong(arrOfStr[1]);
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: enter a long");
+                    continue;
+                }
+                Contact contact = new Contact(arrOfStr[0], contactNumber);
+                contacts.add(contact);
+            }
         } catch (IOException e){
             e.printStackTrace();
         }
