@@ -10,10 +10,12 @@ public class ContactsApplication {
     static Input input = new Input();
     static String directory = "src/data";
     static String filename = "contacts.txt";
+    static Path dataDirectory = Paths.get(directory);
     static Path dataFilepath = Paths.get(directory, filename);
     static ArrayList<Contact> contacts = new ArrayList<>();
 
     public static void methodHandler(){
+        dataSetup();
         readContacts();
         do {
             int option = displayMenu();
@@ -107,6 +109,23 @@ public class ContactsApplication {
             // write the arraylist of robot strings to the file
             Files.write(dataFilepath, contactStrings);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void dataSetup(){
+        try {
+            if (Files.notExists(dataDirectory)) {
+                Files.createDirectories(dataDirectory);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        try {
+            if (!Files.exists(dataFilepath)) {
+                Files.createFile(dataFilepath);
+            }
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
