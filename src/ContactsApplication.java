@@ -45,16 +45,19 @@ public class ContactsApplication {
         System.out.println("Name       | Phone Number |\n" +
                 "---------------------------");
         for (Contact contact : contacts) {
-            String contactNumber = String.valueOf(contact.getNumber());
-            String numberOutput = contactNumber;
-            if (contactNumber.length() >= 7){
-                numberOutput = addChar(numberOutput, 3);
-                if (contactNumber.length() == 10){
-                    numberOutput = addChar(numberOutput, 7);
-                }
-            }
-            System.out.printf("%-10s | %-12s |\n", contact.getName(), numberOutput);
+            printContact(contact);
         }
+    }
+    private static void printContact(Contact contact){
+        String contactNumber = String.valueOf(contact.getNumber());
+        String numberOutput = contactNumber;
+        if (contactNumber.length() >= 7){
+            numberOutput = addChar(numberOutput, 3);
+            if (contactNumber.length() == 10){
+                numberOutput = addChar(numberOutput, 7);
+            }
+        }
+        System.out.printf("%-10s | %-12s |\n", contact.getName(), numberOutput);
     }
     private static String addChar(String str, int position) {
         return str.substring(0, position) + '-' + str.substring(position);
@@ -85,7 +88,7 @@ public class ContactsApplication {
         String userInput = input.getString("Enter contact to search: ");
         for (Contact contact : contacts) {
             if (contact.getName().equalsIgnoreCase(userInput)) {
-                System.out.println(contact);
+                printContact(contact);
                 return;
             }
         }
