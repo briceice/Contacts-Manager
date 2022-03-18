@@ -45,21 +45,30 @@ public class ContactsApplication {
         System.out.println("Name       | Phone Number |\n" +
                 "---------------------------");
         for (Contact contact : contacts) {
-            System.out.printf("%-10s | %-12s |\n", contact.getName(), contact.getNumber());
+            String contactNumber = String.valueOf(contact.getNumber());
+            String numberOutput = contactNumber;
+            if (contactNumber.length() >= 7){
+                numberOutput = addChar(numberOutput, 3);
+                if (contactNumber.length() == 10){
+                    numberOutput = addChar(numberOutput, 7);
+                }
+            }
+            System.out.printf("%-10s | %-12s |\n", contact.getName(), numberOutput);
         }
+    }
+    private static String addChar(String str, int position) {
+        return str.substring(0, position) + '-' + str.substring(position);
     }
     private static void addContact(){
         String contactName = input.getString("Enter contact name: ");
         for (Contact contact : contacts){
             if (contactName.equalsIgnoreCase(contact.getName())){
-                if (!input.yesNo("There's already a contact named " + contactName +
-                        ". Do you want to overwrite it? (Yes/No)")){
-                    return;
-                } else {
+                if (input.yesNo("There's already a contact named " + contactName +
+                        ". Do you want to overwrite it? (Yes/No)")) {
                     int index = contacts.indexOf(contact);
                     overwriteContact(index, contactName);
-                    return;
                 }
+                return;
             }
         }
         long contactNumber = input.getLong("Enter contact number: ");
