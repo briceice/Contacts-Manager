@@ -55,12 +55,22 @@ public class ContactsApplication {
                 if (!input.yesNo("There's already a contact named " + contactName +
                         ". Do you want to overwrite it? (Yes/No)")){
                     return;
+                } else {
+                    int index = contacts.indexOf(contact);
+                    overwriteContact(index, contactName);
+                    return;
                 }
             }
         }
         long contactNumber = input.getLong("Enter contact number: ");
         Contact contact = new Contact(contactName, contactNumber);
         contacts.add(contact);
+    }
+    private static void overwriteContact(int index, String contactName){
+        contacts.remove(index);
+        long contactNumber = input.getLong("Enter contact number: ");
+        Contact contact = new Contact(contactName, contactNumber);
+        contacts.add(index, contact);
     }
     private static void searchContacts(){
         String userInput = input.getString("Enter contact to search: ");
